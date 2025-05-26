@@ -1,170 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AntistaticRabbit Jukebox</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AntistaticRabbit Jukebox</title>
 
-  <!-- Fonts & Swiper -->
-  <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+<!-- Fonts & Swiper -->
+<link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
 
-  <style>
-    :root{ --accent:#9b5de5; --yellow:#ffe066; }
-    body{
-      margin:0; padding:24px; min-height:100vh;
-      display:flex; flex-direction:column; align-items:center;
-      font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-      background:linear-gradient(135deg,#4b1d83 0%,#9b5de5 50%,#d6b3ff 100%);
-      color:#fff;
+<style>
+  :root{ --accent:#9b5de5; --yellow:#ffe066; }
+
+  /* ---------- base ---------- */
+  html,body{margin:0;overflow-x:hidden;}            /* stop sideways drag */
+  body{
+    padding:24px;min-height:100vh;
+    display:flex;flex-direction:column;align-items:center;
+    font-family:ui-sans-serif,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:linear-gradient(135deg,#4b1d83 0%,#9b5de5 50%,#d6b3ff 100%);
+    color:#fff;
+  }
+  header{width:100%;max-width:1200px;display:flex;justify-content:space-between;align-items:center;}
+  h1{
+    font-family:"Bungee Shade",cursive;
+    font-size:3rem;margin:0;
+    color:var(--yellow);text-shadow:0 3px 6px rgba(0,0,0,.4);
+  }
+  a.about-link{color:#ffd6ff;text-decoration:none;font-weight:600;}
+  a.about-link:hover{text-decoration:underline;}
+
+  #randomBtn{
+    margin-top:12px;padding:10px 22px;border:none;border-radius:30px;cursor:pointer;
+    background:var(--yellow);color:#4b1d83;font-weight:700;
+    box-shadow:0 4px 8px rgba(0,0,0,.3);transition:transform .2s;
+  }
+  #randomBtn:hover{transform:scale(1.05)}
+
+  /* ---------- carousel ---------- */
+  .swiper{width:100%;max-width:1200px;padding-top:40px;padding-bottom:80px;overflow:visible;}
+  .swiper-slide{
+    width:380px!important;height:380px!important;
+    display:flex;flex-direction:column;align-items:center;cursor:pointer;
+  }
+  .swiper-slide img{
+    width:380px;height:380px;object-fit:cover;
+    border-radius:18px;box-shadow:0 8px 16px rgba(0,0,0,.45);
+    transition:transform .3s;
+  }
+  .swiper-slide:hover img{transform:scale(1.06);}
+  .swiper-button-prev,.swiper-button-next,.swiper-pagination-bullet{color:var(--yellow);}
+  .swiper-pagination-bullet{background:var(--yellow);}
+
+  /* ---------- modal ---------- */
+  .modal{
+    display:none;position:fixed;top:5%;left:50%;transform:translateX(-50%);
+    padding:24px;background:#2b165c;border:3px solid var(--accent);border-radius:18px;
+    width:min(90vw,640px);                   /* mobile-friendly width */
+    max-height:90vh;overflow-y:auto;box-shadow:0 0 32px rgba(0,0,0,.6);z-index:1000;
+  }
+  .close-btn{
+    position:absolute;top:12px;right:12px;border:none;border-radius:6px;padding:8px 14px;
+    background:var(--yellow);color:#4b1d83;font-weight:700;cursor:pointer;
+  }
+  .video-wrap{position:relative;width:100%;padding-top:56.25%;}
+  .video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:12px;}
+
+  ul{list-style:none;margin-top:16px;padding:0;}
+  .track-btn{background:none;border:none;color:#ffd6ff;cursor:pointer;font-weight:500;padding:6px 0;text-align:left;width:100%;}
+  .track-btn:hover{text-decoration:underline;}
+
+  /* ---------- mobile ---------- */
+  @media(max-width:640px){
+    body{padding:16px;max-width:100vw;}
+    h1{font-size:2rem;}
+    #randomBtn{padding:8px 16px;font-size:.9rem;}
+    .swiper{padding-top:24px;padding-bottom:56px;}
+    .swiper-slide,.swiper-slide img{
+      width:75vw!important;height:75vw!important;   /* leave room for 3-D tilt */
     }
-    header{width:100%;max-width:1200px;display:flex;justify-content:space-between;align-items:center;}
-    h1{font-family:"Bungee Shade",cursive;font-size:3rem;margin:0;color:var(--yellow);text-shadow:0 3px 6px rgba(0,0,0,.4);}
-    a.about-link{color:#ffd6ff;text-decoration:none;font-weight:600;} a.about-link:hover{text-decoration:underline;}
-
-    #randomBtn{
-      margin-top:12px;padding:10px 22px;border:none;border-radius:30px;cursor:pointer;
-      background:var(--yellow);color:#4b1d83;font-weight:700;box-shadow:0 4px 8px rgba(0,0,0,.3);transition:transform .2s;
-    }
-    #randomBtn:hover{transform:scale(1.05)}
-
-    .swiper{width:100%;max-width:1200px;padding-top:40px;padding-bottom:80px;overflow:visible;}
-    .swiper-slide{width:380px!important;height:380px!important;display:flex;flex-direction:column;align-items:center;cursor:pointer;}
-    .swiper-slide img{width:380px;height:380px;object-fit:cover;border-radius:18px;box-shadow:0 8px 16px rgba(0,0,0,.45);transition:transform .3s;}
-    .swiper-slide:hover img{transform:scale(1.06);}
-    .swiper-button-prev,.swiper-button-next,.swiper-pagination-bullet{color:var(--yellow);}
-    .swiper-pagination-bullet{background:var(--yellow);}
-
-    .modal{display:none;position:fixed;top:5%;left:50%;transform:translateX(-50%);background:#2b165c;padding:24px;
-      border:3px solid var(--accent);border-radius:18px;max-width:95vw;max-height:90vh;overflow-y:auto;box-shadow:0 0 32px rgba(0,0,0,.6);z-index:1000;}
-    .close-btn{position:absolute;top:12px;right:12px;border:none;border-radius:6px;padding:8px 14px;font-weight:700;cursor:pointer;
-      background:var(--yellow);color:#4b1d83;}
-    iframe{width:100%;max-width:640px;height:360px;border:none;border-radius:12px;margin-bottom:16px;}
-    ul{list-style:none;padding:0;} .track-btn{background:none;border:none;color:#ffd6ff;cursor:pointer;font-weight:500;padding:6px 0;text-align:left;width:100%;}
-    .track-btn:hover{text-decoration:underline;}
-  </style>
+  }
+</style>
 </head>
 <body>
-  <header>
-    <h1>AntistaticRabbit Jukebox</h1>
-    <a class="about-link" href="#about">About the Artist</a>
-  </header>
+<header>
+  <h1>AntistaticRabbit Jukebox</h1>
+  <a class="about-link" href="#about">About the Artist</a>
+</header>
 
-  <button id="randomBtn">🐰 Rabbit Randomizer</button>
+<button id="randomBtn">🐰 Rabbit Randomizer</button>
 
-  <!-- Carousel -->
-  <div class="swiper"><div class="swiper-wrapper">
+<!-- Carousel -->
+<div class="swiper"><div class="swiper-wrapper">
 
-    <!-- Reflection -->
-    <div class="swiper-slide" onclick="showAlbum('Reflection','OLAK5uy_mxQ7EF-ia3X16MaYyK3J1F4pHPATCzq9c',
-      [{title:'More Than Friends',index:1},{title:'Calm Down',index:2},{title:'Mouse',index:3},{title:'Empty',index:4},
-       {title:'Distracted',index:5},{title:'Easy',index:6},{title:'Pianist',index:7},{title:'Golden Sunrise (feat. Liminal Being)',index:8}])">
-      <img src="images/Reflection.png" alt="Reflection" /><div>Reflection</div>
-    </div>
-
-    <!-- Twilight -->
-    <div class="swiper-slide" onclick="showAlbum('Twilight','OLAK5uy_mL-6ilNWCr3Ei_PjryyI3bG5JU_WSSD9w',
-      [{title:'Ash',index:1},{title:'Parallel',index:2},{title:'Comfortable',index:3},{title:'Butta',index:4},
-       {title:'Blind',index:5},{title:'Little Pig',index:6},{title:'Sphere',index:7},{title:'Serious',index:8}])">
-      <img src="images/Twilight.png" alt="Twilight" /><div>Twilight</div>
-    </div>
-
-    <!-- Brand New Day -->
-    <div class="swiper-slide" onclick="showAlbum('Brand New Day','OLAK5uy_kJd71YqcaDkIUe8chocL64l4CDrrtLcpg',
-      [{title:'Fantasy',index:1},{title:'Words',index:2},{title:'Till The End',index:3},{title:'Imposter',index:4},
-       {title:'Grains Of Sand',index:5},{title:'Film',index:6},{title:'Chips And Salsa',index:7},{title:'Echoes',index:8}])">
-      <img src="images/Brand_New_Day.png" alt="Brand New Day" /><div>Brand New Day</div>
-    </div>
-
-    <!-- Defiant -->
-    <div class="swiper-slide" onclick="showAlbum('Defiant','OLAK5uy_mWKWdOIKuem9EB0opMZ0YnOtrWhmbtGCk',
-      [{title:'Yesterday',index:1},{title:'Odd',index:2},{title:'Roots',index:3},{title:'Duet',index:4},
-       {title:'So What',index:5},{title:'Dust',index:6},{title:'Mr Perfect',index:7},{title:'Trinkets',index:8}])">
-      <img src="images/Defiant.png" alt="Defiant" /><div>Defiant</div>
-    </div>
-
-    <!-- Fractured -->
-    <div class="swiper-slide" onclick="showAlbum('Fractured','OLAK5uy_lxsIZF2yy-p7-xuWeeYhjLKU3_xgPNIqQ',
-      [{title:'Theme Song',index:1},{title:'Destiny',index:2},{title:'Let You Go',index:3},{title:'Badum',index:4},
-       {title:'Broken Clock',index:5},{title:'Get Out',index:6},{title:'Little Moments',index:7},{title:'Wolves',index:8}])">
-      <img src="images/Fractured.png" alt="Fractured" /><div>Fractured</div>
-    </div>
-
-    <!-- Ascension -->
-    <div class="swiper-slide" onclick="showAlbum('Ascension','OLAK5uy_mjkvJt4MX11TLwUaFQvu2TtT80xRIzoMw',
-      [{title:'Be Ok',index:1},{title:'Complicated',index:2},{title:'Feels Like Home',index:3},{title:'Just Me',index:4},
-       {title:'Little Off Track',index:5},{title:'No Control',index:6},{title:'What If',index:7},{title:'Solo',index:8}])">
-      <img src="images/Ascension.png" alt="Ascension" /><div>Ascension</div>
-    </div>
-
-    <!-- Journey -->
-    <div class="swiper-slide" onclick="showAlbum('Journey','OLAK5uy_lRgksPY-L5wG4k1k1xexrKAXMiekwhzB0',
-      [{title:'Hold That Thought',index:1},{title:'Cold As Snow',index:2},{title:'Change',index:3},{title:'Father',index:4},
-       {title:'Tell Me That Were Fine',index:5},{title:'Maracas',index:6},{title:'Painting',index:7},{title:'You\'ll Be Ok',index:8}])">
-      <img src="images/Journey.png" alt="Journey" /><div>Journey</div>
-    </div>
-
-    <!-- Confession -->
-    <div class="swiper-slide" onclick="showAlbum('Confession','OLAK5uy_lTJ0M-QYa7ksK2NYgVVy3vYk6dm8J8Hl4',
-      [{title:'La La La La La',index:1},{title:'Addiction',index:2},{title:'Reason',index:3},{title:'Unworthy',index:4},
-       {title:'Iced Tea',index:5},{title:'Silly Games',index:6},{title:'You (Remix)',index:7}])">
-      <img src="images/Confession.png" alt="Confession" /><div>Confession</div>
-    </div>
-
-  </div>
-    <div class="swiper-pagination"></div>
-    <div class="swiper-button-prev"></div>
-    <div class="swiper-button-next"></div>
+  <!-- Reflection -->
+  <div class="swiper-slide" onclick="showAlbum('Reflection','OLAK5uy_mxQ7EF-ia3X16MaYyK3J1F4pHPATCzq9c',
+    ['More Than Friends','Calm Down','Mouse','Empty','Distracted','Easy','Pianist','Golden Sunrise (feat. Liminal Being)'])">
+    <img src="images/Reflection.png" alt="Reflection"><div>Reflection</div>
   </div>
 
-  <!-- Modal -->
-  <div class="modal" id="albumModal">
-    <button class="close-btn" onclick="closeModal()">Close</button>
-    <h2 id="albumTitle"></h2>
-    <iframe id="albumPreview" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-    <ul id="trackList"></ul>
+  <!-- Twilight -->
+  <div class="swiper-slide" onclick="showAlbum('Twilight','OLAK5uy_mL-6ilNWCr3Ei_PjryyI3bG5JU_WSSD9w',
+    ['Ash','Parallel','Comfortable','Butta','Blind','Little Pig','Sphere','Serious'])">
+    <img src="images/Twilight.png" alt="Twilight"><div>Twilight</div>
   </div>
 
-  <!-- About -->
-  <section id="about" style="max-width:920px;margin:60px auto 24px;text-align:center;color:#ffd6ff;line-height:1.6;">
-    <h2>About AntistaticRabbit</h2>
-    <p>Joshua Perez—better known by his sonic alter-ego AntistaticRabbit—is a California-based producer, songwriter, and one-man idea factory who refuses to color inside genre lines. In the last year alone he’s released nearly a dozen DIY albums that hop effortlessly between pulsing EDM drops, crunchy alt-rock guitars, and the occasional twang of country, all stitched together with an ear for pop hooks and a storyteller’s heart.
+  <!-- Brand New Day -->
+  <div class="swiper-slide" onclick="showAlbum('Brand New Day','OLAK5uy_kJd71YqcaDkIUe8chocL64l4CDrrtLcpg',
+    ['Fantasy','Words','Till The End','Imposter','Grains Of Sand','Film','Chips And Salsa','Echoes'])">
+    <img src="images/Brand_New_Day.png" alt="Brand New Day"><div>Brand New Day</div>
+  </div>
 
-A lifelong tinkerer, Josh sculpts his tracks in a hybrid playground of cutting-edge AI tools, software synths, and late-night coffee—always chasing the moment where technology disappears and emotion takes over. Themes of vulnerability, redemption, and restless curiosity run through his lyrics, while his signature “rabbit ears” imagery nods to the playful spirit he brings to every project.
+  <!-- Defiant -->
+  <div class="swiper-slide" onclick="showAlbum('Defiant','OLAK5uy_mWKWdOIKuem9EB0opMZ0YnOtrWhmbtGCk',
+    ['Yesterday','Odd','Roots','Duet','So What','Dust','Mr Perfect','Trinkets'])">
+    <img src="images/Defiant.png" alt="Defiant"><div>Defiant</div>
+  </div>
 
-When he isn’t shaping waveforms, you’ll find him troubleshooting PCs for his indie IT shop Cookies and Cache LLC, debating philosophy with his wife Sarah, or writing a book series inspired by his wife Sarah (Check out the "If Sarah goes..." series on Amazon!). For Josh, music isn’t just sound—it’s a perpetual experiment in connection, inviting listeners to jump down the rabbit hole and find a piece of their own story echoing back.</p>
-  </section>
+  <!-- Fractured -->
+  <div class="swiper-slide" onclick="showAlbum('Fractured','OLAK5uy_lxsIZF2yy-p7-xuWeeYhjLKU3_xgPNIqQ',
+    ['Theme Song','Destiny','Let You Go','Badum','Broken Clock','Get Out','Little Moments','Wolves'])">
+    <img src="images/Fractured.png" alt="Fractured"><div>Fractured</div>
+  </div>
 
-  <!-- Scripts -->
-  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-  <script>
-    const swiper = new Swiper('.swiper',{
-      loop:true, effect:'coverflow', grabCursor:true, centeredSlides:true, slidesPerView:'auto',
-      coverflowEffect:{rotate:30,stretch:0,depth:250,modifier:1,slideShadows:true},
-      pagination:{el:'.swiper-pagination',clickable:true},
-      navigation:{nextEl:'.swiper-button-next',prevEl:'.swiper-button-prev'}
+  <!-- Ascension -->
+  <div class="swiper-slide" onclick="showAlbum('Ascension','OLAK5uy_mjkvJt4MX11TLwUaFQvu2TtT80xRIzoMw',
+    ['Be Ok','Complicated','Feels Like Home','Just Me','Little Off Track','No Control','What If','Solo'])">
+    <img src="images/Ascension.png" alt="Ascension"><div>Ascension</div>
+  </div>
+
+  <!-- Journey -->
+  <div class="swiper-slide" onclick="showAlbum('Journey','OLAK5uy_lRgksPY-L5wG4k1k1xexrKAXMiekwhzB0',
+    ['Hold That Thought','Cold As Snow','Change','Father','Tell Me That Were Fine','Maracas','Painting','You\'ll Be Ok'])">
+    <img src="images/Journey.png" alt="Journey"><div>Journey</div>
+  </div>
+
+  <!-- Confession -->
+  <div class="swiper-slide" onclick="showAlbum('Confession','OLAK5uy_lTJ0M-QYa7ksK2NYgVVy3vYk6dm8J8Hl4',
+    ['La La La La La','Addiction','Reason','Unworthy','Iced Tea','Silly Games','You (Remix)'])">
+    <img src="images/Confession.png" alt="Confession"><div>Confession</div>
+  </div>
+
+</div>
+  <div class="swiper-pagination"></div>
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-next"></div>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="albumModal">
+  <button class="close-btn" onclick="closeModal()">Close</button>
+  <h2 id="albumTitle"></h2>
+  <div class="video-wrap"><iframe id="albumPreview" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+  <ul id="trackList"></ul>
+</div>
+
+<!-- About -->
+<section id="about" style="max-width:920px;margin:60px auto 24px;text-align:center;color:#ffd6ff;line-height:1.6;">
+  <h2>About AntistaticRabbit</h2>
+  <p>Joshua Perez—better known by his sonic alter-ego <strong>AntistaticRabbit</strong>—is a California-based producer, songwriter, and one-man idea factory who refuses to color inside genre lines. In the last year alone he’s released nearly a dozen DIY albums that hop effortlessly between pulsing EDM drops, crunchy alt-rock guitars, and the occasional twang of country, all stitched together with an ear for pop hooks and a storyteller’s heart.<br><br>
+  A lifelong tinkerer, Josh sculpts his tracks in a hybrid playground of cutting-edge AI tools, software synths, and late-night coffee—always chasing the moment where technology disappears and emotion takes over. Themes of vulnerability, redemption, and restless curiosity run through his lyrics, while his signature “rabbit ears” imagery nods to the playful spirit he brings to every project.<br><br>
+  When he isn’t shaping waveforms, you’ll find him troubleshooting PCs for his indie IT shop <em>Cookies and Cache LLC</em>, debating philosophy with his wife Sarah, or writing a book series inspired by her (<em>check out the “If Sarah Goes…” series on Amazon!</em>). For Josh, music isn’t just sound—it’s a perpetual experiment in connection, inviting listeners to jump down the rabbit hole and find a piece of their own story echoing back.</p>
+</section>
+
+<!-- Scripts -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script>
+  /* Swiper */
+  const swiper = new Swiper('.swiper',{
+    loop:true,effect:'coverflow',grabCursor:true,centeredSlides:true,slidesPerView:'auto',
+    coverflowEffect:{rotate:30,stretch:0,depth:250,modifier:1,slideShadows:true},
+    pagination:{el:'.swiper-pagination',clickable:true},
+    navigation:{nextEl:'.swiper-button-next',prevEl:'.swiper-button-prev'}
+  });
+
+  /* cache DOM nodes */
+  const albumModal   = document.getElementById('albumModal');
+  const albumTitle   = document.getElementById('albumTitle');
+  const albumPreview = document.getElementById('albumPreview');
+  const trackList    = document.getElementById('trackList');
+  const randomBtn    = document.getElementById('randomBtn');
+
+  function showAlbum(title,playlistID,titles){
+    albumTitle.textContent = title;
+    playTrack(`https://www.youtube.com/embed?listType=playlist&list=${playlistID}&index=0&autoplay=1`);
+    trackList.innerHTML = '';
+
+    titles.forEach((name,i)=>{
+      const li  = document.createElement('li');
+      const btn = document.createElement('button');
+      btn.className='track-btn';
+      btn.textContent = name;
+      /* YouTube uses 1-based index for playlist embeds */
+      btn.onclick = ()=>playTrack(`https://www.youtube.com/embed?listType=playlist&list=${playlistID}&index=${i+1}&autoplay=1`);
+      li.appendChild(btn);
+      trackList.appendChild(li);
     });
 
-    function showAlbum(title,playlistId,tracks){
-      document.getElementById('albumTitle').textContent = title;
-      playTrack(`https://www.youtube.com/embed?listType=playlist&list=${playlistId}&index=0&autoplay=1`);
-      const ul=document.getElementById('trackList'); ul.innerHTML='';
-      tracks.forEach(t=>{
-        const li=document.createElement('li');
-        const btn=document.createElement('button');
-        btn.className='track-btn'; btn.textContent=t.title;
-        btn.onclick=()=>playTrack(`https://www.youtube.com/embed?listType=playlist&list=${playlistId}&index=${t.index-1}&autoplay=1`);
-        li.appendChild(btn); ul.appendChild(li);
-      });
-      document.getElementById('albumModal').style.display='block';
-    }
-    function playTrack(src){document.getElementById('albumPreview').src=src;}
-    function closeModal(){document.getElementById('albumModal').style.display='none';playTrack('');}
+    albumModal.style.display='block';
+  }
 
-    const albumSlides=[...document.querySelectorAll('.swiper-slide')];
-    document.getElementById('randomBtn').addEventListener('click',()=>{
-      albumSlides[Math.floor(Math.random()*albumSlides.length)].click();
-    });
-  </script>
+  function playTrack(src){ albumPreview.src = src; }
+  function closeModal(){ albumModal.style.display='none'; playTrack(''); }
+
+  /* Random album */
+  randomBtn.addEventListener('click',()=>{
+    const slides=[...swiper.slides];
+    slides[Math.floor(Math.random()*slides.length)].click();
+  });
+</script>
 </body>
 </html>
