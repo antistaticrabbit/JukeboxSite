@@ -114,7 +114,7 @@ ul{list-style:none;margin-top:16px;padding:0;}
 <!-- Carousel -->
 <div class="swiper"><div class="swiper-wrapper">
 
-      <!-- Hello World -->
+  <!-- Hello World -->
   <div class="swiper-slide" onclick="showAlbum('Hello World','OLAK5uy_lgX5qJHQL5vfK2EMlLr3CzR611xy8eEuo',
     ['Hello World','World On Fire','Pop','Perro','Naive','Glad','Serendipity','Legacy'])">
     <img src="images/helloworld.png" alt="Hello World" onerror="this.onerror=null;this.src='https://placehold.co/380x380/4b1d83/ffe066?text=Hello+World';"><div>Hello World</div>
@@ -174,8 +174,6 @@ ul{list-style:none;margin-top:16px;padding:0;}
     <img src="images/Confession.png" alt="Confession" onerror="this.onerror=null;this.src='https://placehold.co/380x380/4b1d83/ffe066?text=Confession';"><div>Confession</div>
   </div>
 
-
-
 </div>
   <div class="swiper-pagination"></div>
   <div class="swiper-button-prev"></div>
@@ -218,8 +216,8 @@ ul{list-style:none;margin-top:16px;padding:0;}
 
   function showAlbum(title,playlistID,titles){
     albumTitle.textContent = title;
-    // Use the 'videoseries' embed type for playlists
-    playTrack(`https://www.youtube.com/embed/videoseries?list=${playlistID}&autoplay=1`);
+    // The initial track to play is the first one (index=1)
+    playTrack(`https://www.youtube.com/embed?listType=playlist&list=${playlistID}&index=1&autoplay=1`);
     trackList.innerHTML = '';
 
     titles.forEach((name,i)=>{
@@ -227,8 +225,8 @@ ul{list-style:none;margin-top:16px;padding:0;}
       const btn = document.createElement('button');
       btn.className='track-btn';
       btn.textContent = name;
-      /* YouTube uses 1-based index for playlist embeds */
-      btn.onclick = ()=>playTrack(`https://www.youtube.com/embed/videoseries?list=${playlistID}&index=${i+1}&autoplay=1`);
+      /* YouTube uses a 1-based index for playlist embeds, so we use i + 1 */
+      btn.onclick = ()=>playTrack(`https://www.youtube.com/embed?listType=playlist&list=${playlistID}&index=${i+1}&autoplay=1`);
       li.appendChild(btn);
       trackList.appendChild(li);
     });
