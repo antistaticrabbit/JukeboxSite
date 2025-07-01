@@ -13,7 +13,7 @@
 :root{ --accent:#9b5de5; --yellow:#ffe066; }
 
 /* ---------- base ---------- */
-html,body{margin:0;overflow-x:hidden;}       /* stop sideways drag */
+html,body{margin:0;overflow-x:hidden;}        /* stop sideways drag */
 body{
   padding:24px;min-height:100vh;
   display:flex;flex-direction:column;align-items:center;
@@ -66,7 +66,7 @@ a.about-link:hover{text-decoration:underline;}
 .modal{
   display:none;position:fixed;top:5%;left:50%;transform:translateX(-50%);
   padding:24px;background:#2b165c;border:3px solid var(--accent);border-radius:18px;
-  width:min(90vw,640px);          /* stretch on phones, cap on desktop */
+  width:min(90vw,640px);         /* stretch on phones, cap on desktop */
   max-height:90vh;overflow-y:auto;box-shadow:0 0 32px rgba(0,0,0,.6);z-index:1000;
 }
 .close-btn{
@@ -114,53 +114,67 @@ ul{list-style:none;margin-top:16px;padding:0;}
 <!-- Carousel -->
 <div class="swiper"><div class="swiper-wrapper">
 
+      <!-- Hello World -->
+  <div class="swiper-slide" onclick="showAlbum('Hello World','OLAK5uy_lgX5qJHQL5vfK2EMlLr3CzR611xy8eEuo',
+    ['Hello World','World On Fire','Pop','Perro','Naive','Glad','Serendipity','Legacy'])">
+    <img src="images/helloworld.png" alt="Hello World" onerror="this.onerror=null;this.src='https://placehold.co/380x380/4b1d83/ffe066?text=Hello+World';"><div>Hello World</div>
+  </div>
+
+  <!-- Terminal -->
+  <div class="swiper-slide" onclick="showAlbum('Terminal','OLAK5uy_lWxlj21jeXC7XAevlkLZAhEvpjcdXPbPM',
+    ['Peak','How Do We Know','Slope','Be A Nice Human','Cold Air','Listen','Break Free','Move On'])">
+    <img src="images/Terminal.png" alt="Terminal" onerror="this.onerror=null;this.src='https://placehold.co/380x380/4b1d83/ffe066?text=Terminal';"><div>Terminal</div>
+  </div>
+
   <!-- Reflection -->
   <div class="swiper-slide" onclick="showAlbum('Reflection','OLAK5uy_mxQ7EF-ia3X16MaYyK3J1F4pHPATCzq9c',
     ['More Than Friends','Calm Down','Mouse','Empty','Distracted','Easy','Pianist','Golden Sunrise (feat. Liminal Being)'])">
-    <img src="images/Reflection.png" alt="Reflection"><div>Reflection</div>
+    <img src="images/Reflection.png" alt="Reflection" onerror="this.onerror=null;this.src='https://placehold.co/380x380/4b1d83/ffe066?text=Reflection';"><div>Reflection</div>
   </div>
 
   <!-- Twilight -->
   <div class="swiper-slide" onclick="showAlbum('Twilight','OLAK5uy_mL-6ilNWCr3Ei_PjryyI3bG5JU_WSSD9w',
     ['Ash','Parallel','Comfortable','Butta','Blind','Little Pig','Sphere','Serious'])">
-    <img src="images/Twilight.png" alt="Twilight"><div>Twilight</div>
+    <img src="images/Twilight.png" alt="Twilight" onerror="this.onerror=null;this.src='https://placehold.co/380x380/4b1d83/ffe066?text=Twilight';"><div>Twilight</div>
   </div>
 
   <!-- Brand New Day -->
   <div class="swiper-slide" onclick="showAlbum('Brand New Day','OLAK5uy_kJd71YqcaDkIUe8chocL64l4CDrrtLcpg',
     ['Fantasy','Words','Till The End','Imposter','Grains Of Sand','Film','Chips And Salsa','Echoes'])">
-    <img src="images/Brand_New_Day.png" alt="Brand New Day"><div>Brand New Day</div>
+    <img src="images/Brand_New_Day.png" alt="Brand New Day" onerror="this.onerror=null;this.src='https://placehold.co/380x380/4b1d83/ffe066?text=Brand+New+Day';"><div>Brand New Day</div>
   </div>
 
   <!-- Defiant -->
   <div class="swiper-slide" onclick="showAlbum('Defiant','OLAK5uy_mWKWdOIKuem9EB0opMZ0YnOtrWhmbtGCk',
     ['Yesterday','Odd','Roots','Duet','So What','Dust','Mr Perfect','Trinkets'])">
-    <img src="images/Defiant.png" alt="Defiant"><div>Defiant</div>
+    <img src="images/Defiant.png" alt="Defiant" onerror="this.onerror=null;this.src='https://placehold.co/380x380/4b1d83/ffe066?text=Defiant';"><div>Defiant</div>
   </div>
 
   <!-- Fractured -->
   <div class="swiper-slide" onclick="showAlbum('Fractured','OLAK5uy_lxsIZF2yy-p7-xuWeeYhjLKU3_xgPNIqQ',
     ['Theme Song','Destiny','Let You Go','Badum','Broken Clock','Get Out','Little Moments','Wolves'])">
-    <img src="images/Fractured.png" alt="Fractured"><div>Fractured</div>
+    <img src="images/Fractured.png" alt="Fractured" onerror="this.onerror=null;this.src='https://placehold.co/380x380/4b1d83/ffe066?text=Fractured';"><div>Fractured</div>
   </div>
 
   <!-- Ascension -->
   <div class="swiper-slide" onclick="showAlbum('Ascension','OLAK5uy_mjkvJt4MX11TLwUaFQvu2TtT80xRIzoMw',
     ['Be Ok','Complicated','Feels Like Home','Just Me','Little Off Track','No Control','What If','Solo'])">
-    <img src="images/Ascension.png" alt="Ascension"><div>Ascension</div>
+    <img src="images/Ascension.png" alt="Ascension" onerror="this.onerror=null;this.src='https://placehold.co/380x380/4b1d83/ffe066?text=Ascension';"><div>Ascension</div>
   </div>
 
   <!-- Journey -->
   <div class="swiper-slide" onclick="showAlbum('Journey','OLAK5uy_lRgksPY-L5wG4k1k1xexrKAXMiekwhzB0',
     ['Hold That Thought','Cold As Snow','Change','Father','Tell Me That Were Fine','Maracas','Painting','You\'ll Be Ok'])">
-    <img src="images/Journey.png" alt="Journey"><div>Journey</div>
+    <img src="images/Journey.png" alt="Journey" onerror="this.onerror=null;this.src='https://placehold.co/380x380/4b1d83/ffe066?text=Journey';"><div>Journey</div>
   </div>
 
   <!-- Confession -->
   <div class="swiper-slide" onclick="showAlbum('Confession','OLAK5uy_lTJ0M-QYa7ksK2NYgVVy3vYk6dm8J8Hl4',
     ['La La La La La','Addiction','Reason','Unworthy','Iced Tea','Silly Games','You (Remix)'])">
-    <img src="images/Confession.png" alt="Confession"><div>Confession</div>
+    <img src="images/Confession.png" alt="Confession" onerror="this.onerror=null;this.src='https://placehold.co/380x380/4b1d83/ffe066?text=Confession';"><div>Confession</div>
   </div>
+
+
 
 </div>
   <div class="swiper-pagination"></div>
@@ -204,7 +218,8 @@ ul{list-style:none;margin-top:16px;padding:0;}
 
   function showAlbum(title,playlistID,titles){
     albumTitle.textContent = title;
-    playTrack(`https://www.youtube.com/embed?listType=playlist&list=${playlistID}&index=0&autoplay=1`);
+    // Use the 'videoseries' embed type for playlists
+    playTrack(`https://www.youtube.com/embed/videoseries?list=${playlistID}&autoplay=1`);
     trackList.innerHTML = '';
 
     titles.forEach((name,i)=>{
@@ -213,7 +228,7 @@ ul{list-style:none;margin-top:16px;padding:0;}
       btn.className='track-btn';
       btn.textContent = name;
       /* YouTube uses 1-based index for playlist embeds */
-      btn.onclick = ()=>playTrack(`https://www.youtube.com/embed?listType=playlist&list=${playlistID}&index=${i+1}&autoplay=1`);
+      btn.onclick = ()=>playTrack(`https://www.youtube.com/embed/videoseries?list=${playlistID}&index=${i+1}&autoplay=1`);
       li.appendChild(btn);
       trackList.appendChild(li);
     });
@@ -226,7 +241,9 @@ ul{list-style:none;margin-top:16px;padding:0;}
 
   /* Random album */
   randomBtn.addEventListener('click',()=>{
-    const slides=[...swiper.slides];
+    // Get all slides that are NOT duplicates (an issue with loop:true)
+    const slides=[...document.querySelectorAll('.swiper-slide:not(.swiper-slide-duplicate)')];
+    // Click a random slide from the original set
     slides[Math.floor(Math.random()*slides.length)].click();
   });
 </script>
